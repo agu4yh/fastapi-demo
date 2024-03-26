@@ -17,7 +17,7 @@ app = FastAPI()
 
 @app.get("/")  # zone apex
 def zone_apex():
-    return {"Hello": "Hello Anisha"}
+    return {"Hello": "Hello"}
     
     
 # api calls within an api!
@@ -99,12 +99,12 @@ def fetch_buckets():
     buckets = response['Buckets']
     return {"buckets": buckets}
 
-# New endpoint to return sample data
-@app.get("/data")
+# New endpoint returning sample data
+@app.get("/greetings")
 def get_sample_data():
     sample_data = [
-        {"id": 1, "name": "Morning", "description": "Good morning Anisha"},
-        {"id": 2, "name": "Evening", "description": "Good evening Anisha"},
-        {"id": 3, "name": "Night", "description": "Good night Anisha"}
+        {"id": 1, "name": "Morning", "description": "Good morning"},
+        {"id": 2, "name": "Evening", "description": "Good evening"},
+        {"id": 3, "name": "Night", "description": "Good night"}
     ]
-    return {"data": sample_data}
+    return {"greetings": sample_data}
