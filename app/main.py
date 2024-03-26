@@ -98,3 +98,13 @@ def fetch_buckets():
     response = s3.list_buckets()
     buckets = response['Buckets']
     return {"buckets": buckets}
+
+# New endpoint to return sample data
+@app.get("/data")
+def get_sample_data():
+    sample_data = [
+        {"id": 1, "name": "Morning", "description": "Good morning Anisha"},
+        {"id": 2, "name": "Evening", "description": "Good evening Anisha"},
+        {"id": 3, "name": "Night", "description": "Good night Anisha"}
+    ]
+    return {"data": sample_data}
