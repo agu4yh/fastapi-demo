@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 
+
 from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
 import json
 import requests
 import boto3
+import os
+import MySQLdb
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+DBHOST = os.environ.get('DBHOST')
+DBUSER = os.environ.get('DBUSER')
+DBPASS = os.environ.get('DBPASS')
+DB = "agu4yh"  # replace with your UVA computing ID / database name
 
 # The URL for this API has a /docs endpoint that lets you see and test
 # your various endpoints/methods.
@@ -108,3 +119,21 @@ def get_sample_data():
         {"id": 3, "name": "Night", "description": "Good night"}
     ]
     return {"greetings": sample_data}
+
+@app.get("/albums")
+def get_albums():
+    db = MySQLdb.connect(host=DBHOST, user=DBUSER, passwd=DBPASS, db=DB)
+    c = db.cursor(MySQLdb.cursors.DictCursor)
+    c.execute("""SELECT * FROM albums ORDER BY name""")
+    results = c.fetchall()
+    db.close()
+    return results
+
+@app.get("/albums/{id}")
+def get_one_album(id):
+    db = MySQLdb.connect(host=DBHOST, user=DBUSER, passwd=DBPASS, db=DB)
+    c = db.cursor(MySQLdb.cursors.DictCursor)
+    c.execute("SELECT * FROM albums WHERE id=" + id)
+    results = c.fetchall()
+    db.close()
+    return results
